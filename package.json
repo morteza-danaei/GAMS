@@ -3,5 +3,13 @@
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
     "husky": "^8.0.3"
+  },
+  "dependencies": {
+    "@types/cookie-session": "^2.0.45",
+    "@types/joi": "^17.2.3",
+    "@types/jsonwebtoken": "^9.0.3",
+    "cookie-session": "^2.0.0",
+    "joi": "^17.10.2",
+    "jsonwebtoken": "^9.0.2"
   }
 }
