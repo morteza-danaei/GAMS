@@ -3,9 +3,9 @@ import Joi from "joi";
 import jwt from "jsonwebtoken";
 
 import { Request, Response, NextFunction } from "express";
-// import { validationResult } from "express-validator";
 
 import { User } from "../models/user";
+import { BadRequestError } from "../errorHandler/errors/bad-request-error";
 
 const validateRequest = async (
   req: Request,
@@ -43,9 +43,8 @@ router.post(
 
     const existingUser = await User.findOne({ email });
 
-    //TODO:  design a  class for Bad Request Errors
     if (existingUser) {
-      throw new Error("Email in use");
+      next(new BadRequestError("Email in use"));
     }
 
     const user = User.build({ email, password });
