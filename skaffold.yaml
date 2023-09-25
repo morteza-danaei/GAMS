@@ -7,7 +7,7 @@ manifests:
     - ./infra/k8s/*
 build:
   local:
-    push: false
+    push: true
   artifacts:
     - image: mortezadanaei/gams-auth
       context: auth

@@ -1,8 +1,10 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import { json } from "body-parser";
 import cookieSession from "cookie-session";
 
 import { signupRouter } from "./routes/signup";
+import { NotFoundError } from "./errorHandler/errors/not-found-error";
+import { errorHandler } from "./errorHandler/error-handler";
 
 const app = express();
 app.set("trust proxy", true);
@@ -16,10 +18,10 @@ app.use(
 
 app.use(signupRouter);
 
-app.all("*", async (req, res) => {
-  //TODO: create a NotFoundError class and handle it
-  //TODO: inside error handler middleware
-  throw new Error("The path not found");
+app.all("*", async (req: Request, res: Response, next: NextFunction) => {
+  next(new NotFoundError());
 });
+
+app.use(errorHandler);
 
 export { app };
