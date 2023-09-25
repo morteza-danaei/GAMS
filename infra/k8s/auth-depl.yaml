@@ -14,10 +14,8 @@ spec:
     spec:
       containers:
         - name: auth
-          image: mortezadanaei/gams-auth
+          image: mortezadanaei/gams-auth:latest
           env:
-            - name: PORT
-              value: "3000"
             - name: MONGO_URI
               value: 'mongodb://auth-mongo-srv:27017/auth'
             - name: JWT_KEY
