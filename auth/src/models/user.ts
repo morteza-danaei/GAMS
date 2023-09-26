@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
 
+import { Password } from "../helpers/password";
 // An interface that describes the properties
 // that are requried to create a new User
 interface UserProps {
@@ -54,14 +54,8 @@ const userSchema = new mongoose.Schema(
 //saving to db
 userSchema.pre("save", async function (done) {
   if (this.isModified("password")) {
-    const saltRounds = 10;
-    const password = this.get("password");
-    let hashedPassword;
-    await bcrypt.genSalt(saltRounds, function (err, salt) {
-      bcrypt.hash(password, salt, function (err, hash) {
-        hashedPassword = hash;
-      });
-    });
+    const hashedPassword = Password.toHash(this.get("password"));
+
     // Store hash in your password DB.
     this.set("password", hashedPassword);
   }
