@@ -1,30 +1,48 @@
+const addFormats = require("ajv-formats");
+const Ajv = require("ajv");
+
 import { Request, Response, NextFunction } from "express";
-import Joi from "joi";
 
-const validateRequest = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const schema = Joi.object({
-    username: Joi.string().alphanum().min(6).max(30).required(),
+/**
+ * A function of for user validation using ajv
 
-    password: Joi.string().min(6).required(),
+ * @param req - The request object
+ * @param next - The next function
+ * @returns  undefined if there is no  requset validation error 
+ *           the error array if there are some validation errors
+ *            
+ */
+const validateRequest = async (req: Request, next: NextFunction) => {
+  const ajv = new Ajv({ allErrors: true, async: true, $data: true }); // options can be passed, e.g. {allErrors: true}
+  addFormats(ajv, ["password", "email"]);
 
-    repeat_password: Joi.ref("password"),
+  //defining  schema in json schema format
+  const schema = {
+    type: "object",
+    properties: {
+      username: { type: "string", minimum: 4, maximum: 20 },
+      password: {
+        type: "string",
+        format: "password",
+        // minlength: 3,
+        // maxLength: 30,
+      },
 
-    email: Joi.string().email(),
-  });
+      //set this field equal to password by using a json relative pointer
+      repeat_password: { type: "string", const: { $data: "1/password" } },
+      email: { type: "string", format: "email" },
+    },
+    required: ["username", "password", "email", "repeat_password"],
+    additionalProperties: false,
+  };
 
-  try {
-    const value = await schema.validateAsync(req.body);
-  } catch (err) {
-    //TODO: design an error handler system that have different classes for errors
-    //TODO: and here  we can pass errors.array() to be handled
-    //TODO: design a ValidationError class
-    console.log(err);
+  const validate = ajv.compile(schema);
+
+  const valid = await validate(req.body);
+  if (!valid) {
+    return validate.errors;
   }
-  next();
+  return undefined;
 };
 
 export { validateRequest };

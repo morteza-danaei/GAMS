@@ -6,19 +6,26 @@ import { Request, Response, NextFunction } from "express";
 import { User } from "../models/user";
 import { validateRequest } from "../helpers/validator";
 import { BadRequestError } from "../errorHandler/errors/bad-request-error";
+import { RequestValidationError } from "../errorHandler/errors/request-validation-error";
 
 const router = express.Router();
 
 router.post(
   "/api/users/signup",
-  validateRequest,
   async (req: Request, res: Response, next: NextFunction) => {
+    const validationErrors = await validateRequest(req, next);
+
+    if (validationErrors) {
+      // console.log(`validationError: ${validationError}`);
+      return next(new RequestValidationError(validationErrors));
+    }
     const { email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      return next(new BadRequestError("Email in use"));
+      next(new BadRequestError("Email in use"));
+      return;
     }
 
     const user = User.build({ email, password });
