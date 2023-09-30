@@ -19,16 +19,19 @@ router.post(
       // console.log(`validationError: ${validationError}`);
       return next(new RequestValidationError(validationErrors));
     }
-    const { email, password } = req.body;
+    const { username, password, email } = req.body;
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ username });
 
     if (existingUser) {
-      next(new BadRequestError("Email in use"));
-      return;
+      return next(new BadRequestError("Email in use"));
     }
 
-    const user = User.build({ email, password });
+    const user = User.build({ username, password, email } as {
+      username: string;
+      password: string;
+      email: string;
+    });
     await user.save();
 
     // Generate JWT
