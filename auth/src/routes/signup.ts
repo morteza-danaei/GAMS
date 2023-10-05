@@ -24,7 +24,7 @@ router.post(
     const existingUser = await User.findOne({ username });
 
     if (existingUser) {
-      return next(new BadRequestError("Email in use"));
+      return next(new BadRequestError("username in use"));
     }
 
     const user = User.build({ username, password, email } as {

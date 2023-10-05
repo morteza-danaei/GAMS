@@ -10,11 +10,11 @@ export class Password {
   static async toHash(password: string) {
     const saltRounds = 10;
     let hashedPassword;
-    await bcrypt.genSalt(saltRounds, function (err, salt) {
-      bcrypt.hash(password, salt, function (err, hash) {
-        hashedPassword = hash;
-      });
-    });
+    try {
+      hashedPassword = await bcrypt.hash(password, saltRounds);
+    } catch (err) {
+      console.log(err);
+    }
     return hashedPassword;
   }
 
@@ -25,12 +25,23 @@ export class Password {
    * @param suppliedPassword- The password 
    * @returns true if the storedPassword is the hashed version of suppliedPassword
    */
-  static async compare(storedPassword: string, suppliedPassword: string) {
-    bcrypt.compare(suppliedPassword, storedPassword, function (err, result) {
-      if (err) {
-        return console.log(err);
-      }
-      return result;
-    });
+  static async compare(
+    storedPassword: string,
+    suppliedPassword: string
+  ): Promise<boolean> {
+    console.log(
+      "existing pass:",
+      storedPassword,
+      "  suppliedPass:",
+      suppliedPassword
+    );
+    let finalResult: boolean = false;
+    try {
+      finalResult = await bcrypt.compare(suppliedPassword, storedPassword);
+    } catch (error) {
+      // TODO: Define an error class for this type of error
+      console.log(error);
+    }
+    return finalResult;
   }
 }

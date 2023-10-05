@@ -3,6 +3,9 @@ const Ajv = require("ajv");
 
 import { Request, Response, NextFunction } from "express";
 
+//TODO: define an abstract class for validator and
+//ToDO: two subcalsses for signup validator and signin validator
+
 /**
  * A function of for user validation using ajv
 
@@ -24,8 +27,6 @@ const validateRequest = async (req: Request, next: NextFunction) => {
       password: {
         type: "string",
         format: "password",
-        // minlength: 3,
-        // maxLength: 30,
       },
 
       //set this field equal to password by using a json relative pointer

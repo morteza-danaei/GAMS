@@ -60,7 +60,7 @@ const userSchema = new mongoose.Schema(
 //saving to db
 userSchema.pre("save", async function (done) {
   if (this.isModified("password")) {
-    const hashedPassword = Password.toHash(this.get("password"));
+    const hashedPassword = await Password.toHash(this.get("password"));
 
     // Store hash in your password DB.
     this.set("password", hashedPassword);
