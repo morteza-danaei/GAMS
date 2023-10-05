@@ -4,18 +4,14 @@ import request from "supertest";
 import { app } from "../app";
 
 declare global {
-  namespace NodeJS {
-    interface Global {
-      signin(): Promise<string[]>;
-    }
-  }
+  function signin(): Promise<string[]>;
 }
 
 let mongo: any;
 beforeAll(async () => {
   process.env.JWT_KEY = "asdfasdf";
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-  // create an in-memory mongo instance to mock mongodb
   mongo = new MongoMemoryServer();
   const mongoUri = await mongo.getUri();
 
@@ -25,7 +21,6 @@ beforeAll(async () => {
 beforeEach(async () => {
   const collections = await mongoose.connection.db.collections();
 
-  // clean up mongo before each test
   for (let collection of collections) {
     await collection.deleteMany({});
   }
@@ -36,14 +31,15 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
+// a global function to be used for signin in tests
 global.signin = async () => {
-  const email = "test@test.com";
+  const username = "test@test.com";
   const password = "password";
 
   const response = await request(app)
     .post("/api/users/signup")
     .send({
-      email,
+      username,
       password,
     })
     .expect(201);
@@ -52,5 +48,3 @@ global.signin = async () => {
 
   return cookie;
 };
-
-globalThis.signin: = global.signin;
