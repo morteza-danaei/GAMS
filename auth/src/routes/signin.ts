@@ -1,28 +1,30 @@
 import express, { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-import { validateRequest } from "../helpers/validator";
+import { AjvValidator } from "../helpers/ajv-validator";
 import { BadRequestError } from "../errorHandler/errors/bad-request-error";
 import { RequestValidationError } from "../errorHandler/errors/request-validation-error";
 import { Password } from "../helpers/password";
 import { User } from "../models/user";
+import { SigninType, signinSchema } from "../helpers/schemas";
 
 const router = express.Router();
 
 router.post(
   "/api/users/signin",
   async (req: Request, res: Response, next: NextFunction) => {
-    // const validationErrors = await validateRequest(req, next);
+    const validator = new AjvValidator<SigninType>(signinSchema);
+    const validationErrors = await validator.validateRequest(req.body);
 
-    // if (validationErrors) {
-    //   // console.log(`validationError: ${validationError}`);
-    //   return next(new RequestValidationError(validationErrors));
-    // }
+    if (validationErrors) {
+      return next(new RequestValidationError(validationErrors));
+    }
+
     const { username, email, password } = req.body;
 
     const existingUser = await User.findOne({ username });
     if (!existingUser) {
-      return next(new BadRequestError("user invalid credentials"));
+      return next(new BadRequestError("Invalid credentials"));
     }
 
     const passwordsMatch = await Password.compare(
@@ -30,7 +32,7 @@ router.post(
       password
     );
     if (!passwordsMatch) {
-      return next(new BadRequestError("pass Invalid credentials"));
+      return next(new BadRequestError("Invalid credentials"));
     }
 
     // Generate JWT
