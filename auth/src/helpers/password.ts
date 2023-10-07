@@ -29,12 +29,6 @@ export class Password {
     storedPassword: string,
     suppliedPassword: string
   ): Promise<boolean> {
-    console.log(
-      "existing pass:",
-      storedPassword,
-      "  suppliedPass:",
-      suppliedPassword
-    );
     let finalResult: boolean = false;
     try {
       finalResult = await bcrypt.compare(suppliedPassword, storedPassword);
