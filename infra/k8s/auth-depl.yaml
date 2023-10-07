@@ -18,6 +18,16 @@ spec:
           env:
             - name: MONGO_URI
               value: 'mongodb://auth-mongo-srv:27017/auth'
+            - name: COOKIE_KEY1
+              valueFrom:
+                secretKeyRef:
+                  name: cookie-secret1
+                  key: COOKIE_KEY1
+            - name: COOKIE_KEY2
+              valueFrom:
+                secretKeyRef:
+                  name: cookie-secret2
+                  key: COOKIE_KEY2
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:

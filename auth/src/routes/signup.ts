@@ -44,11 +44,12 @@ router.post(
       },
       process.env.JWT_KEY!
     );
-
+    console.log(`req.session before jwt:${req.session?.jwt}`);
     // Store it on session object
     req.session = {
       jwt: userJwt,
     };
+    console.log(`req.session after jwt:${req.session.jwt}`);
 
     res.status(201).send(user);
   }
