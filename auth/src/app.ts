@@ -7,6 +7,7 @@ import { NotFoundError } from "./errorHandler/errors/not-found-error";
 import { errorHandler } from "./errorHandler/error-handler";
 import { signinRouter } from "./routes/signin";
 import { currentUserRouter } from "./routes/current-user";
+import { signoutRouter } from "./routes/signout";
 
 const app = express();
 app.use(json());
@@ -24,6 +25,7 @@ app.use(
 app.use(signupRouter);
 app.use(signinRouter);
 app.use(currentUserRouter);
+app.use(signoutRouter);
 
 app.all("*", async (req: Request, res: Response, next: NextFunction) => {
   next(new NotFoundError());

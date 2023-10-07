@@ -1,7 +1,7 @@
 const signupSchema = {
   type: "object",
   properties: {
-    username: { type: "string", minimum: 4, maximum: 20 },
+    username: { type: "string" },
     password: {
       type: "string",
       format: "password",
@@ -29,7 +29,7 @@ type Signup = {
 const signinSchema = {
   type: "object",
   properties: {
-    username: { type: "string", minimum: 4, maximum: 20 },
+    username: { type: "string" },
     password: {
       type: "string",
       format: "password",
