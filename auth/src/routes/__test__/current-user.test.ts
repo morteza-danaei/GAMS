@@ -1,10 +1,5 @@
 import request from "supertest";
 import { app } from "../../app";
-import {
-  validSigninUser,
-  validSignupUser,
-  changePropertyValue,
-} from "../../test/test-helper";
 
 it("returns 200 when a user is signed in", async () => {
   const cookie = await global.signin();
