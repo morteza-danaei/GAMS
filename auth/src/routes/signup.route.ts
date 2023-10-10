@@ -3,10 +3,10 @@ import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
 import { User } from "../models/user";
-import { AjvValidator } from "../helpers/ajv-validator";
+import { AjvValidator } from "./ajv/ajv-validator";
 import { BadRequestError } from "../errorHandler/errors/bad-request-error";
 import { RequestValidationError } from "../errorHandler/errors/request-validation-error";
-import { SignupType, signupSchema } from "../helpers/ajv-schemas";
+import { SignupType, signupSchema } from "./ajv/ajv-schemas";
 
 const router = express.Router();
 

@@ -1,12 +1,12 @@
 import express, { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-import { AjvValidator } from "../helpers/ajv-validator";
+import { AjvValidator } from "./ajv/ajv-validator";
 import { BadRequestError } from "../errorHandler/errors/bad-request-error";
 import { RequestValidationError } from "../errorHandler/errors/request-validation-error";
 import { Password } from "../helpers/password";
 import { User } from "../models/user";
-import { SigninType, signinSchema } from "../helpers/ajv-schemas";
+import { SigninType, signinSchema } from "./ajv/ajv-schemas";
 
 const router = express.Router();
 
