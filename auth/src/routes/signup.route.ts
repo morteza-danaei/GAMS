@@ -6,13 +6,14 @@ import { User } from "../models/user";
 import { AjvValidator } from "../helpers/ajv-validator";
 import { BadRequestError } from "../errorHandler/errors/bad-request-error";
 import { RequestValidationError } from "../errorHandler/errors/request-validation-error";
-import { SignupType, signupSchema } from "../helpers/schemas";
+import { SignupType, signupSchema } from "../helpers/ajvSchemas";
 
 const router = express.Router();
 
 router.post(
   "/api/users/signup",
   async (req: Request, res: Response, next: NextFunction) => {
+    //validate the body and find possible errors
     const validator = new AjvValidator<SignupType>(signupSchema);
     const validationErrors = await validator.validateRequest(req.body);
 
@@ -44,12 +45,10 @@ router.post(
       },
       process.env.JWT_KEY!
     );
-    console.log(`req.session before jwt:${req.session?.jwt}`);
     // Store it on session object
     req.session = {
       jwt: userJwt,
     };
-    console.log(`req.session after jwt:${req.session.jwt}`);
 
     res.status(201).send(user);
   }

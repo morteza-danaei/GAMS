@@ -1,5 +1,6 @@
-const addFormats = require("ajv-formats");
-const Ajv = require("ajv");
+import addFormats from "ajv-formats";
+import Ajv from "ajv";
+import ajvErrors from "ajv-errors";
 
 import { Request, Response, NextFunction } from "express";
 
@@ -15,9 +16,9 @@ class AjvValidator<T extends Object> {
   *            
   */
   validateRequest(req: Request) {
-    const ajv = new Ajv({ allErrors: true, async: true, $data: true }); // options can be passed, e.g. {allErrors: true}
+    const ajv = new Ajv({ allErrors: true, $data: true }); // options can be passed, e.g. {allErrors: true}
     addFormats(ajv, ["password", "email"]);
-
+    ajvErrors(ajv);
     //defining  schema in json schema format
     const validate = ajv.compile(this.schema);
 
