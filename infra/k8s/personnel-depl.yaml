@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: personnel-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: personnel
+  template:
+    metadata:
+      labels:
+        app: personnel
+    spec:
+      containers:
+        - name: personnel
+          image: mortezadanaei/gams-personnel:latest
+          env:
+            - name: MONGO_URI
+              value: 'mongodb://personnel-mongo-srv:27017/tickets'
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: personnel-srv
+spec:
+  selector:
+    app: personnel
+  ports:
+    - name: personnel
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
