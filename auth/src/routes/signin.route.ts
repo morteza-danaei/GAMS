@@ -1,9 +1,9 @@
 import express, { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-import { AjvValidator } from "./ajv/ajv-validator";
-import { BadRequestError } from "../errorHandler/errors/bad-request-error";
-import { RequestValidationError } from "../errorHandler/errors/request-validation-error";
+import { AjvValidator } from "@gams/utility";
+import { BadRequestError } from "@gams/utility";
+import { RequestValidationError } from "@gams/utility";
 import { Password } from "../helpers/password";
 import { User } from "../models/user";
 import { SigninType, signinSchema } from "./ajv/ajv-schemas";
@@ -14,7 +14,10 @@ router.post(
   "/api/users/signin",
   async (req: Request, res: Response, next: NextFunction) => {
     const validator = new AjvValidator<SigninType>(signinSchema);
-    const validationErrors = await validator.validateRequest(req.body);
+    const validationErrors = await validator.validateRequest(req.body, [
+      "password",
+      "email",
+    ]);
 
     if (validationErrors) {
       return next(new RequestValidationError(validationErrors));

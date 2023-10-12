@@ -3,13 +3,13 @@ import { json } from "body-parser";
 import cookieSession from "cookie-session";
 
 import { signupRouter } from "./routes/signup.route";
-import { NotFoundError } from "./errorHandler/errors/not-found-error";
-import { errorHandler } from "./errorHandler/error-handler";
+import { NotFoundError } from "@gams/utility";
+import { errorHandler } from "../../utility/src/middlewares/error-handler";
 import { signinRouter } from "./routes/signin.route";
 import { currentUserRouter } from "./routes/current-user.route";
 import { signoutRouter } from "./routes/signout.route";
 import { swaggerRouter } from "./routes/swagger.route";
-import { cookieOptions } from "./helpers/cookie-options";
+import { cookieOptions } from "@gams/utility";
 
 const app = express();
 
@@ -17,10 +17,6 @@ app.use(json());
 app.set("trust proxy", true);
 
 app.use(cookieSession(cookieOptions));
-
-app.get("/api", (req, res) => {
-  res.send({ json: "flksajd;lfkjsad" });
-});
 
 app.use(swaggerRouter);
 app.use(signupRouter);

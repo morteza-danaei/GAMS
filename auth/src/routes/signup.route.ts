@@ -3,9 +3,9 @@ import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
 import { User } from "../models/user";
-import { AjvValidator } from "./ajv/ajv-validator";
-import { BadRequestError } from "../errorHandler/errors/bad-request-error";
-import { RequestValidationError } from "../errorHandler/errors/request-validation-error";
+import { AjvValidator } from "@gams/utility";
+import { BadRequestError } from "@gams/utility";
+import { RequestValidationError } from "@gams/utility";
 import { SignupType, signupSchema } from "./ajv/ajv-schemas";
 
 const router = express.Router();
@@ -15,7 +15,10 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     //validate the body and find possible errors
     const validator = new AjvValidator<SignupType>(signupSchema);
-    const validationErrors = await validator.validateRequest(req.body);
+    const validationErrors = await validator.validateRequest(req.body, [
+      "email",
+      "password",
+    ]);
 
     if (validationErrors) {
       return next(new RequestValidationError(validationErrors));

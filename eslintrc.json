@@ -1,7 +1,0 @@
-{
-    "rules":{
-        "no-tabs":"off",
-        "indent":"off",
-        "@typescript-eslint/indent":"off"
-    }
-}
