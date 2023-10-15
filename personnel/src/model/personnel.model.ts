@@ -13,7 +13,10 @@ interface PrsnlProps {
 // An interface that describes the properties
 // that a personnel Document has
 interface PrsnlDoc extends mongoose.Document {
+  //National ID
   nid: string;
+
+  //personnel Id
   pid: string;
   name: string;
   lastname: string;
@@ -75,7 +78,7 @@ const prsnlSchema = new mongoose.Schema(
  * A static factory method of Personnel model that creates a new Personnel.
 
  * @param props - The properties of the personnel object to be created
- * @returns a User instance with properties equal to props
+ * @returns a Personnel instance with properties equal to props
  */
 prsnlSchema.statics.build = (props: PrsnlProps) => {
   return new Personnel(props);

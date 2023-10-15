@@ -15,7 +15,7 @@ app.all("*", async (req, res) => {
   throw new NotFoundError();
 });
 
-// An error handler for handling all erorrs
+//This is an error handler for handling all erorrs
 // occured in middlewares
 app.use(errorHandler);
 

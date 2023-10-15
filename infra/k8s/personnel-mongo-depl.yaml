@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: personnel-mongo
-          image: mongo
+          image: mongo:latest
 ---
 apiVersion: v1
 kind: Service
