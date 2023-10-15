@@ -5,7 +5,7 @@ import {
   validSigninUser,
   validSignupUser,
   changePropertyValue,
-} from "../../test/test-helper";
+} from "../../helpers/test.helper";
 
 it("returns a 201 on successful signup", async () => {
   return request(app)

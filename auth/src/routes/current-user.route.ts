@@ -2,8 +2,7 @@ import express from "express";
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-import { BadRequestError } from "@gams/utility";
-import { currentUser } from "@gams/utility";
+import { BadRequestError, currentUser } from "@gams/utility";
 
 const router = express.Router();
 

@@ -33,10 +33,10 @@ afterAll(async () => {
 
 // a global function to be used for signin in tests
 global.signin = async () => {
-  const username = "test";
-  const password = "password";
-  const repeat_password = "password";
-  const email = "a@d.com";
+  const username = "d38240undhhhfl";
+  const password = "Aa!328794skhdnf";
+  const repeat_password = "Aa!328794skhdnf";
+  const email = "a@daad.com";
 
   const response = await request(app)
     .post("/api/users/signup")

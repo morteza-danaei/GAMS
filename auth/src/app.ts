@@ -4,7 +4,7 @@ import cookieSession from "cookie-session";
 
 import { signupRouter } from "./routes/signup.route";
 import { NotFoundError } from "@gams/utility";
-import { errorHandler } from "../../utility/src/middlewares/error-handler";
+import { errorHandler } from "@gams/utility";
 import { signinRouter } from "./routes/signin.route";
 import { currentUserRouter } from "./routes/current-user.route";
 import { signoutRouter } from "./routes/signout.route";

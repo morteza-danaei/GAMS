@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-import { Password } from "../helpers/password";
-// An interface that describes the properties
+import { Password } from "../helpers/password.helper";
+// this interface  describes the properties
 // that are requried to create a new User
 interface UserProps {
   username: string;
@@ -9,7 +9,7 @@ interface UserProps {
   password: string;
 }
 
-// An interface that describes the properties
+// This interface  describes the properties
 // that a User Document has
 interface UserDoc extends mongoose.Document {
   username: string;
@@ -17,7 +17,7 @@ interface UserDoc extends mongoose.Document {
   password: string;
 }
 
-// An interface that describes the properties
+// This interface  describes the properties
 // that a User Model has
 interface UserModel extends mongoose.Model<UserDoc> {
   /**
@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema(
     },
   },
   {
-    // The following code is used to change _id prop in document
+    // This code segment is used to change _id prop in document
     // to id
     toJSON: {
       transform(doc, ret) {
@@ -56,7 +56,7 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-//A mongoose pre middleware to hash password before
+//This method is a mongoose pre middleware that  hashes password before
 //saving to db
 userSchema.pre("save", async function (done) {
   if (this.isModified("password")) {
@@ -80,4 +80,4 @@ userSchema.statics.build = (props: UserProps) => {
 
 const User = mongoose.model<UserDoc, UserModel>("User", userSchema);
 
-export { User };
+export { User, UserDoc };

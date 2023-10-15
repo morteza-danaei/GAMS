@@ -4,7 +4,7 @@ import {
   validSigninUser,
   validSignupUser,
   changePropertyValue,
-} from "../../test/test-helper";
+} from "../../helpers/test.helper";
 
 it("fails when a username that does not exist is supplied", async () => {
   await request(app)

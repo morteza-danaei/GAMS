@@ -5,10 +5,10 @@ interface signupUser {
   email: string;
 }
 const validSignupUser: signupUser = {
-  username: "d38240undfl",
-  password: "fsdfsadfasd1",
-  repeat_password: "fsdfsadfasd1",
-  email: "a@dd.com",
+  username: "d38240undhhhfl",
+  password: "Aa!328794skhdnf",
+  repeat_password: "Aa!328794skhdnf",
+  email: "a@daad.com",
 };
 
 interface SigninUser {
@@ -16,10 +16,18 @@ interface SigninUser {
   password: string;
 }
 const validSigninUser: SigninUser = {
-  username: "d38240undfl",
-  password: "fsdfsadfasd1",
+  username: "d38240undhhhfl",
+  password: "Aa!328794skhdnf",
 };
 
+/**
+ * Returns the modified version of an object by adding a property to it.
+ *
+ * @param object - The original object
+ * @param propertyName - The additional property name(key)in string
+ * @param newValue - The value of the additional property
+ * @returns the modified object with an  additional property
+ */
 function changePropertyValue<T extends Object, K extends keyof T>(
   object: T,
   propertyName: K,

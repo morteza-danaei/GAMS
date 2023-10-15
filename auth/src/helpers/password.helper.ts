@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 
 export class Password {
   /**
-  * A static  method that get a password in plain and returns hashed version.
+  * Returns the hashed version of a given password.
  
   * @param password - The plain password
   * @returns hashed password
@@ -19,7 +19,8 @@ export class Password {
   }
 
   /**
-   * A static  method that compared a password with a hshed text to see if they are the same.
+   * @description A static  method that compares a password 
+   * with a hashed text to see if they are the same.
  
    * @param storedPassword - The hashed version of password
    * @param suppliedPassword- The password 
