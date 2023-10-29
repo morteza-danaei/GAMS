@@ -40,9 +40,7 @@ router.post(
     });
 
     await user.save();
-
     req = jwtSign(req, user);
-
     res.status(201).send(user);
   }
 );

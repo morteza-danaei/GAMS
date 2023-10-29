@@ -1,9 +1,6 @@
 import mongoose from "mongoose";
-import https from "https";
 
 import { app } from "./app";
-
-const httpServer = https.createServer(app);
 
 const start = async () => {
   if (!process.env.JWT_KEY) {

@@ -7,10 +7,11 @@ export const jwtSign = (req: Request, user: UserDoc): Request => {
   const userJwt = jwt.sign(
     {
       id: user.id,
-      email: user.email,
+      username: user.username,
     },
     process.env.JWT_KEY!
   );
+  console.log(`jwtSign ${userJwt}`);
 
   // Store it on session object
   req.session = {

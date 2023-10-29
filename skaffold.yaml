@@ -18,7 +18,7 @@ build:
           - src: 'src/**/*.ts'
             dest: .
     - image: mortezadanaei/gams-personnel
-      context: auth
+      context: personnel
       docker:
         dockerfile: Dockerfile
       sync:
