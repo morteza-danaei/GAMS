@@ -59,9 +59,9 @@ const personnelSchema = {
   errorMessage: {
     type: "should be an object",
     required: {
-      pid: 'should have an string property "pid"',
+      pid: 'should have a string property "pid"',
       nid: 'should have a string property "nid"',
-      name: 'should have an string property "name"',
+      name: 'should have a string property "name"',
       lastname: 'should have a string property "lastname"',
       department: 'should have a string property "department"',
     },

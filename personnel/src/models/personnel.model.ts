@@ -89,4 +89,4 @@ const Personnel = mongoose.model<PrsnlDoc, PrsnlModel>(
   prsnlSchema
 );
 
-export { Personnel };
+export { Personnel, PrsnlProps };

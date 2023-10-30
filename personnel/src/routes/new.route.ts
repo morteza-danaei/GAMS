@@ -13,9 +13,17 @@ const router = express.Router();
 router.post(
   "/api/personnels",
   async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.currentUser) {
+      return res.status(401).send({ message: "Not Authorized" });
+    }
+
     const { nid, pid, name, lastname, department } = req.body;
 
     const existingPersonnel = await Personnel.findOne({ nid });
+
+    if (existingPersonnel) {
+      return next(new BadRequestError("nid in use"));
+    }
 
     //This code segment validates the body and find possible errors
     const validator = new AjvValidator<PersonnelType>(personnelSchema);
@@ -26,14 +34,6 @@ router.post(
 
     if (validationErrors) {
       return next(new RequestValidationError(validationErrors));
-    }
-
-    if (existingPersonnel) {
-      return next(new BadRequestError("nid in use"));
-    }
-
-    if (!req.currentUser) {
-      return res.status(403).send({ message: "Not Authorized" });
     }
 
     const personnel = Personnel.build({
