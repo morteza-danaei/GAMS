@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
+
 import { app } from "./app";
+import { natsConnector } from "./helpers/nats-connector";
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -19,6 +21,19 @@ const start = async () => {
   }
 
   try {
+    await natsConnector.connect(
+      process.env.NATS_CLUSTER_ID,
+      process.env.NATS_CLIENT_ID,
+      process.env.NATS_URL
+    );
+    natsConnector.client.on("close", () => {
+      console.log("NATS connection closed!");
+      process.exit();
+    });
+    process.on("SIGINT", () => natsConnector.client.close());
+    process.on("SIGTERM", () => natsConnector.client.close());
+
+    //connect to mongoose
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to MongoDb");
   } catch (err) {

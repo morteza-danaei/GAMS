@@ -7,6 +7,7 @@ import {
 
 import { Personnel } from "../models/personnel.model";
 import { personnelSchema, PersonnelType } from "./ajv/ajv-schemas";
+import { natsConnector } from "../helpers/nats-connector";
 
 const router = express.Router();
 
@@ -45,6 +46,24 @@ router.post(
     });
 
     await personnel.save();
+
+    natsConnector.client.publish(
+      "personnel:created",
+      JSON.stringify({
+        id: personnel.pid,
+        title: personnel.nid,
+        price: personnel.name,
+        userId: personnel.lastname,
+        version: personnel.department,
+      }),
+      (err) => {
+        if (err) {
+          // TODO: define a new error class
+          return next(err);
+        }
+        console.log("Event published to subject", "personnel:created");
+      }
+    );
 
     res.status(201).send(personnel);
   }
