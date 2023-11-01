@@ -19,8 +19,10 @@ app.set("trust proxy", true);
 app.use(cookieSession(cookieOptions));
 app.use(cookieParser());
 
-// This is a middleware that adds currentuser to the req obj if
-// the user is signed in
+/**
+ * A middleware that adds currentuser to the req obj if
+ * the user is signed in
+ */
 app.use(currentUser);
 
 // TODO: add a middleware to check the role of the user
@@ -30,8 +32,9 @@ app.all("*", async (req, res) => {
   throw new NotFoundError();
 });
 
-//This is an error handler for handling all erorrs
-// occured in middlewares
+/**
+ * An error handler for handling all erorrs occure in middlewares
+ */
 app.use(errorHandler);
 
 export { app };

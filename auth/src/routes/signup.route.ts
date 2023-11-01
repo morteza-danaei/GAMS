@@ -16,9 +16,13 @@ router.post(
   "/api/users/signup",
   async (req: Request, res: Response, next: NextFunction) => {
     const { username, password, email } = req.body;
-    const existingUser = await User.findOne({ username });
 
-    //This code segment validates the body and find possible errors
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return next(new BadRequestError("username in use"));
+    }
+
+    //validates the body and find possible errors
     const validator = new AjvValidator<SignupType>(signupSchema);
     const validationErrors = await validator.validateRequest(req.body, [
       "email",
@@ -27,10 +31,6 @@ router.post(
 
     if (validationErrors) {
       return next(new RequestValidationError(validationErrors));
-    }
-
-    if (existingUser) {
-      return next(new BadRequestError("username in use"));
     }
 
     const user = User.build({ username, password, email } as {

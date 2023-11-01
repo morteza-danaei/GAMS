@@ -1,3 +1,6 @@
+/**
+ * An interface that represents a user object for signing up.
+ */
 interface signupUser {
   username: string;
   password: string;

@@ -16,9 +16,15 @@ const router = express.Router();
 router.post(
   "/api/users/signin",
   async (req: Request, res: Response, next: NextFunction) => {
-    let passwordsMatch = false;
     const { username, email, password } = req.body;
+
     const existingUser = await User.findOne({ username });
+    if (!existingUser) {
+      return next(new BadRequestError("Invalid credentials"));
+    }
+
+    // Check if the password is correct.
+    let passwordsMatch = false;
     if (existingUser)
       passwordsMatch = await Password.compare(existingUser!.password, password);
 
@@ -28,21 +34,17 @@ router.post(
       "password",
       "email",
     ]);
-
+    // Validate the request body.
     if (validationErrors) {
       return next(new RequestValidationError(validationErrors));
-    }
-
-    if (!existingUser) {
-      return next(new BadRequestError("Invalid credentials"));
     }
 
     if (!passwordsMatch) {
       return next(new BadRequestError("Invalid credentials"));
     }
 
+    // Sign a JWT token for the user and send it back in the response.
     req = jwtSign(req, existingUser);
-
     res.status(200).send(existingUser);
   }
 );

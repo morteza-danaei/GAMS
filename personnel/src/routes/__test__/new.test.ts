@@ -3,6 +3,7 @@ import { app } from "../../app";
 
 import { Personnel } from "../../models/personnel.model";
 import { validPersonnel } from "../../helpers/test.helper";
+import { natsConnector } from "../../nats-connector";
 
 /**
  *  gets a property name and a value  and a message
@@ -135,4 +136,14 @@ it("creates a personnel if a valid personnel is provided", async () => {
   expect(prsnls[0].department).toEqual("fsadf");
 });
 
-it("publishes an event", async () => {});
+it("publishes an event", async () => {
+  const title = "asldkfj";
+
+  await request(app)
+    .post("/api/personnels")
+    .set("Cookie", await global.signin())
+    .send(validPersonnel)
+    .expect(201);
+
+  expect(natsConnector.client.publish).toHaveBeenCalled();
+});

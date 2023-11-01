@@ -1,3 +1,6 @@
+/**
+ * A JSON schema that defines the structure and validation rules for a personnel object.
+ */
 const personnelSchema = {
   type: "object",
 
@@ -69,6 +72,9 @@ const personnelSchema = {
   additionalProperties: false,
 };
 
+/**
+ * A TypeScript type that corresponds to the `personnelSchema` JSON schema.
+ */
 type PersonnelType = {
   type: string;
   properties: {

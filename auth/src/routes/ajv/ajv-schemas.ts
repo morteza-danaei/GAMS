@@ -1,3 +1,14 @@
+/**
+ * An AJV schema for validating a user object for signing up.
+
+ * This schema requires the following properties:
+ * - username: A string of at least 8 and at most 64 characters.
+ * - password: A string of at least 8 and at most 64 characters, containing lowercase, capital letter, and special characters.
+ * - repeat_password: A string that is exactly equal to the password.
+ * - email: A valid email address.
+
+ * All of these properties are required.
+ */
 const signupSchema = {
   type: "object",
 
@@ -27,7 +38,8 @@ const signupSchema = {
       },
     },
 
-    //set this field equal to password by using a json relative pointer
+    // This code segment sets repeat_password to be equal
+    // to password by using a json relative pointer
     repeat_password: {
       type: "string",
       const: { $data: "1/password" },
@@ -59,6 +71,9 @@ const signupSchema = {
   additionalProperties: false,
 };
 
+/**
+ * A TypeScript type that corresponds to the `signupSchema` AJV schema.
+ */
 type SignupType = {
   type: string;
   properties: {
@@ -72,6 +87,15 @@ type SignupType = {
   additionalProperties: boolean;
 };
 
+/**
+ * An AJV schema for validating a user object for signing in.
+
+ * This schema requires the following properties:
+ * - username: A string of at least 8 and at most 64 characters.
+ * - password: A string of at least 8 and at most 64 characters, containing lowercase, capital letter, and special characters.
+
+ * All of these properties are required.
+ */
 const signinSchema = {
   type: "object",
 
@@ -112,6 +136,9 @@ const signinSchema = {
   additionalProperties: false,
 };
 
+/**
+ * A TypeScript type that corresponds to the `signinSchema` AJV schema.
+ */
 type SigninType = {
   type: string;
   properties: {

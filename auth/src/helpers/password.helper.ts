@@ -19,8 +19,7 @@ export class Password {
   }
 
   /**
-   * @description A static  method that compares a password 
-   * with a hashed text to see if they are the same.
+   * compares a password  with a hashed text to see if they are the same.
  
    * @param storedPassword - The hashed version of password
    * @param suppliedPassword- The password 

@@ -10,7 +10,7 @@ var swaggerOptions = {
   explorer: true,
 };
 
-//These two lines enable swagggerUI on /api/users/docs
+// Enable swagggerUI on /api/users/docs
 router.use("/api/users/docs", swaggerUi.serve);
 router.get("/api/users/docs", swaggerUi.setup(swaggerDocument, swaggerOptions));
 

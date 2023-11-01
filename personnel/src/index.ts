@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 import { app } from "./app";
-import { natsConnector } from "./helpers/nats-connector";
+import { natsConnector } from "./nats-connector";
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -30,6 +30,10 @@ const start = async () => {
       console.log("NATS connection closed!");
       process.exit();
     });
+
+    /**
+     * Sets up a listener to close the NATS connection when the process receives a SIGINT or SIGTERM signal.
+     */
     process.on("SIGINT", () => natsConnector.client.close());
     process.on("SIGTERM", () => natsConnector.client.close());
 
