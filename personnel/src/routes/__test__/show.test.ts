@@ -2,7 +2,13 @@ import request from "supertest";
 import { app } from "../../app";
 import mongoose from "mongoose";
 
-import { validPersonnel } from "../../helpers/test.helper";
+import {
+  testInvalidCookie,
+  testRequiresAuth,
+  testRouteHandler,
+  testSignedInUser,
+  validPersonnel,
+} from "./test.helper";
 import { Personnel } from "../../models/personnel.model";
 
 let prsnlId: string;
@@ -25,36 +31,26 @@ const personnelId = async () => {
   prsnlId = personnels[0].id.toString();
 };
 
-it("has a route handler listening to /api/personnels/:id for get requests", async () => {
-  await personnelId();
+describe("API tests", () => {
+  it("has a route handler listening to /api/personnels for get requests", async () => {
+    await personnelId();
+    testRouteHandler(`/api/personnels/${prsnlId}`);
+  });
 
-  const response = await request(app)
-    .get(`/api/personnels/${prsnlId}`)
-    .set("Cookie", await global.signin());
-  expect(response.status).not.toBe(400);
-});
+  it("can only be accessed if the user is signed in", async () => {
+    await personnelId();
+    testRequiresAuth(`/api/personnels/${prsnlId}`);
+  });
 
-it("can only be accessed if the user is signed in", async () => {
-  await personnelId();
+  it("returns 401 when cookie is tampered/invalid", async () => {
+    await personnelId();
+    testInvalidCookie(`/api/personnels/${prsnlId}`);
+  });
 
-  await request(app).get(`/api/personnels/${prsnlId}`).expect(401);
-});
-
-it("returns 401 when cookie is tampered/invalid", async () => {
-  await personnelId();
-  await request(app)
-    .get(`/api/personnels/${prsnlId}`)
-    .set("Cookie", "fsadfsdfsadfsa")
-    .expect(401);
-});
-
-it("returns a status other than 401 if the user is signed in", async () => {
-  await personnelId();
-  const response = await request(app)
-    .get(`/api/personnels/${prsnlId}`)
-    .set("Cookie", await global.signin());
-
-  expect(response.status).not.toEqual(401);
+  it("returns a status other than 401 if the user is signed in", async () => {
+    await personnelId();
+    testSignedInUser(`/api/personnels/${prsnlId}`);
+  });
 });
 
 it("returns a 404 if the personnel is not found", async () => {

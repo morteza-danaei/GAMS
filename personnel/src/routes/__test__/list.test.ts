@@ -2,7 +2,13 @@ import request from "supertest";
 import { app } from "../../app";
 import mongoose from "mongoose";
 
-import { validPersonnel } from "../../helpers/test.helper";
+import {
+  validPersonnel,
+  testInvalidCookie,
+  testRequiresAuth,
+  testRouteHandler,
+  testSignedInUser,
+} from "./test.helper";
 import { Personnel } from "../../models/personnel.model";
 
 let prsnlId: string;
@@ -16,30 +22,55 @@ let prsnlId: string;
  * It assigns the prsnlId variable with the ID of a personnel created by the current user.
  */
 
-it("has a route handler listening to /api/personnels for get requests", async () => {
-  const response = await request(app)
-    .get(`/api/personnels`)
-    .set("Cookie", await global.signin());
-  expect(response.status).toBe(200);
-});
+// it("has a route handler listening to /api/personnels for get requests", async () => {
+//   const response = await request(app)
+//     .get(`/api/personnels`)
+//     .set("Cookie", await global.signin());
+//   expect(response.status).toBe(200);
+// });
 
-it("can only be accessed if the user is signed in", async () => {
-  await request(app).get(`/api/personnels`).expect(401);
-});
+// it("can only be accessed if the user is signed in", async () => {
+//   await request(app).get(`/api/personnels`).expect(401);
+// });
 
-it("returns 401 when cookie is tampered/invalid", async () => {
-  await request(app)
-    .get(`/api/personnels`)
-    .set("Cookie", "fsadfsdfsadfsa")
-    .expect(401);
-});
+// it("returns 401 when cookie is tampered/invalid", async () => {
+//   await request(app)
+//     .get(`/api/personnels`)
+//     .set("Cookie", "fsadfsdfsadfsa")
+//     .expect(401);
+// });
 
-it("returns a status other than 401 if the user is signed in", async () => {
-  const response = await request(app)
-    .get(`/api/personnels`)
-    .set("Cookie", await global.signin());
+// it("returns a status other than 401 if the user is signed in", async () => {
+//   const response = await request(app)
+//     .get(`/api/personnels`)
+//     .set("Cookie", await global.signin());
 
-  expect(response.status).not.toEqual(401);
+//   expect(response.status).not.toEqual(401);
+// });
+
+// helper function to test a route handler for GET requests
+
+// use the helper functions to write your tests
+describe("API tests", () => {
+  it(
+    "has a route handler listening to /api/personnels for get requests",
+    testRouteHandler("/api/personnels")
+  );
+
+  it(
+    "can only be accessed if the user is signed in",
+    testRequiresAuth("/api/personnels")
+  );
+
+  it(
+    "returns 401 when cookie is tampered/invalid",
+    testInvalidCookie("/api/personnels")
+  );
+
+  it(
+    "returns a status other than 401 if the user is signed in",
+    testSignedInUser("/api/personnels")
+  );
 });
 
 it("sends a list of personnels", async () => {

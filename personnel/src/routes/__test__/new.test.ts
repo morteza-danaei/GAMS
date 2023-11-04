@@ -2,7 +2,13 @@ import request from "supertest";
 import { app } from "../../app";
 
 import { Personnel } from "../../models/personnel.model";
-import { validPersonnel } from "../../helpers/test.helper";
+import {
+  validPersonnel,
+  testInvalidCookie,
+  testRequiresAuth,
+  testRouteHandler,
+  testSignedInUser,
+} from "./test.helper";
 import { natsConnector } from "../../nats-connector";
 
 /**
@@ -28,31 +34,26 @@ const testInput = async (
   expect(response.body.errors[0].message).toBe(message);
 };
 
-it("has a route handler listening to /api/personnels for post requests", async () => {
-  const response = await request(app).post("/api/personnels").send({});
+describe("API tests", () => {
+  it(
+    "has a route handler listening to /api/personnels for get requests",
+    testRouteHandler("/api/personnels")
+  );
 
-  expect(response.status).not.toEqual(404);
-});
+  it(
+    "can only be accessed if the user is signed in",
+    testRequiresAuth("/api/personnels")
+  );
 
-it("can only be accessed if the user is signed in", async () => {
-  await request(app).post("/api/personnels").send({}).expect(401);
-});
+  it(
+    "returns 401 when cookie is tampered/invalid",
+    testInvalidCookie("/api/personnels")
+  );
 
-it("returns 401 when cookie is tampered/invalid", async () => {
-  await request(app)
-    .post("/api/personnels")
-    .set("Cookie", "fsadfsdfsadfsa")
-    .send({})
-    .expect(401);
-});
-
-it("returns a status other than 401 if the user is signed in", async () => {
-  const response = await request(app)
-    .post("/api/personnels")
-    .set("Cookie", await global.signin())
-    .send({});
-
-  expect(response.status).not.toEqual(401);
+  it(
+    "returns a status other than 401 if the user is signed in",
+    testSignedInUser("/api/personnels")
+  );
 });
 
 it("returns a validation error if an invalid pid is provided", async () => {
