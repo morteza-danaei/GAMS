@@ -12,6 +12,7 @@ import {
 import { createPersonnelRouter } from "./routes/new.route";
 import { showPersonnelRouter } from "./routes/show.route";
 import { listPersonnelRouter } from "./routes/list.route";
+import { updatePersonnelRouter } from "./routes/update.route";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use(currentUser);
 app.use(createPersonnelRouter);
 app.use(showPersonnelRouter);
 app.use(listPersonnelRouter);
+app.use(updatePersonnelRouter);
 
 app.all("*", async (req, res) => {
   throw new NotFoundError();
