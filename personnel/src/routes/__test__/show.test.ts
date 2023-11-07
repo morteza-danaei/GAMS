@@ -21,7 +21,7 @@ let prsnlId: string;
 
  * It assigns the prsnlId variable with the ID of a personnel created by the current user.
  */
-const personnelId = async () => {
+const getPersonnelId = async () => {
   const response = await request(app)
     .post("/api/personnels")
     .set("Cookie", await global.signin())
@@ -33,22 +33,22 @@ const personnelId = async () => {
 
 describe("API tests", () => {
   it("has a route handler listening to /api/personnels for get requests", async () => {
-    await personnelId();
+    await getPersonnelId();
     testRouteHandler(`/api/personnels/${prsnlId}`);
   });
 
   it("can only be accessed if the user is signed in", async () => {
-    await personnelId();
+    await getPersonnelId();
     testRequiresAuth(`/api/personnels/${prsnlId}`);
   });
 
   it("returns 401 when cookie is tampered/invalid", async () => {
-    await personnelId();
+    await getPersonnelId();
     testInvalidCookie(`/api/personnels/${prsnlId}`);
   });
 
   it("returns a status other than 401 if the user is signed in", async () => {
-    await personnelId();
+    await getPersonnelId();
     testSignedInUser(`/api/personnels/${prsnlId}`);
   });
 });
@@ -60,7 +60,7 @@ it("returns a 404 if the personnel is not found", async () => {
 });
 
 it("returns the personnel if the personnel is found", async () => {
-  await personnelId();
+  await getPersonnelId();
 
   const response = await request(app)
     .get(`/api/personnels/${prsnlId}`)

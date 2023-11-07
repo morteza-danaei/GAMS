@@ -65,7 +65,7 @@ router.put(
       department: existingPersonnel.department,
     });
 
-    res.status(201).send(existingPersonnel);
+    res.send(existingPersonnel);
   }
 );
 

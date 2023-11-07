@@ -28,7 +28,7 @@ const personnelSchema = {
 
     name: {
       type: "string",
-      minLength: 1,
+      minLength: 2,
       maxLength: 50,
       errorMessage: {
         type: " must be string",
@@ -38,7 +38,7 @@ const personnelSchema = {
     },
     lastname: {
       type: "string",
-      minLength: 1,
+      minLength: 2,
       maxLength: 50,
       errorMessage: {
         type: " must be string",
@@ -48,7 +48,7 @@ const personnelSchema = {
     },
     department: {
       type: "string",
-      minLength: 1,
+      minLength: 2,
       maxLength: 50,
       errorMessage: {
         type: " must be string",
