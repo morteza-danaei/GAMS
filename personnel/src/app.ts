@@ -13,6 +13,7 @@ import { createPersonnelRouter } from "./routes/new.route";
 import { showPersonnelRouter } from "./routes/show.route";
 import { listPersonnelRouter } from "./routes/list.route";
 import { updatePersonnelRouter } from "./routes/update.route";
+import { swaggerRouter } from "./routes/swagger.route";
 
 const app = express();
 
@@ -22,11 +23,13 @@ app.set("trust proxy", true);
 app.use(cookieSession(cookieOptions));
 app.use(cookieParser());
 
+app.use(swaggerRouter);
+
 /**
  * A middleware that adds currentuser to the req obj if
  * the user is signed in
  */
-app.use(currentUser);
+// app.use(currentUser);
 
 // TODO: add a middleware to check the role of the user
 app.use(createPersonnelRouter);

@@ -2,8 +2,14 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Auth API",
+    "description": "This API allows you to signup, signin, signout and see the current user.",
     "version": "1.0.0"
   },
+  "servers": [
+    {
+      "url": "https://example.com/api/users/docs"
+    }
+  ],
   "paths": {
     "/api/users/signup": {
       "post": {
@@ -13,21 +19,36 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": [
+                  "username",
+                  "password",
+                  "repeat_password",
+                  "email"
+                ],
                 "properties": {
                   "username": {
                     "type": "string",
+                    "minLength": 8,
+                    "maxLength": 64,
                     "description": "The username of the new user."
                   },
                   "password": {
                     "type": "string",
+                    
+                    "minLength": 8,
+                    "maxLength": 64,
                     "description": "The password of the new user."
                   },
                   "repeat_password": {
                     "type": "string",
+                    "minLength": 8,
+                    "maxLength": 64,
                     "description": "The password of the new user, repeated for confirmation."
                   },
                   "email": {
                     "type": "string",
+                    "minLength": 8,
+                    "maxLength": 64,
                     "format": "email",
                     "description": "The email address of the new user."
                   }

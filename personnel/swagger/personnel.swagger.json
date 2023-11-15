@@ -1,0 +1,399 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "Personnel API",
+      "description": "This API allows you to create, read, update, and delete personnel records.",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "https://example.com/api/personnels/docs"
+      }
+    ],
+    "paths": {
+      "/api/personnels": {
+        "post": {
+          "summary": "Create a new personnel record.",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "pid",
+                    "nid",
+                    "name",
+                    "lastname",
+                    "department"
+                  ],
+                  "properties": {
+                    "nid": {
+                      "type": "string",
+                      "minLength": 10,
+                      "maxLength": 10,
+                      "description": "The National ID of the personnel"
+                      
+                    },
+                    "pid": {
+                        "type": "string",
+                        "minLength": 8,
+                        "maxLength": 8,
+                        "description": "The personnel ID of the personnel"
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 50,
+                        "description": "The name of the personnel"
+                    },
+                    "lastname": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 50,
+                        "description": "The last name of the personnel"
+                    },
+                    "department": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 50,
+                        "description": "The department in which the personnel works"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+                "description": "Personnel created successfully",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "nid": {
+                          "type": "string",
+                          "description": "The National Identification Number (NID) of the personnel"
+                        },
+                        "pid": {
+                          "type": "string",
+                          "description": "The Personnel Identification Number (PID) of the personnel"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "The name of the personnel"
+                        },
+                        "lastname": {
+                          "type": "string",
+                          "description": "The last name of the personnel"
+                        },
+                        "department": {
+                          "type": "string",
+                          "description": "The department of the personnel"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "400": 
+              {
+                "description": "Invalid request parameters",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "description": "nid in use / [nid | pid | name | lastname | department] must be string / [nid | pid | name | lastname | department] must be exactly 8 characters / should have a string property [nid | pid | name | lastname | department]"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Not Authorized",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "description": "Not Authorized"
+                        }
+                      }
+                    }
+                  }
+                }
+                }
+        }},
+        "get": {
+          "summary": "List all personnel records.",
+          
+          "responses": {
+            "200": [{
+                "description": "Personnels listed successfully",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "nid": {
+                          "type": "string",
+                          "description": "The National Identification Number (NID) of the personnel"
+                        },
+                        "pid": {
+                          "type": "string",
+                          "description": "The Personnel Identification Number (PID) of the personnel"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "The name of the personnel"
+                        },
+                        "lastname": {
+                          "type": "string",
+                          "description": "The last name of the personnel"
+                        },
+                        "department": {
+                          "type": "string",
+                          "description": "The department of the personnel"
+                        }
+                      }
+                    }
+                  }
+                }
+              }],
+
+              "401": {
+                "description": "Not Authorized",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "description": "Not Authorized"
+                        }
+                      }
+                    }
+                  }
+                }
+                }
+   
+          }
+        }
+      },
+      "/personnels/{id}": {
+        "get": {
+          "summary": "Get a specific personnel record.",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+                "description": "Personnel found successfully",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "nid": {
+                          "type": "string",
+                          "description": "The National Identification Number (NID) of the personnel"
+                        },
+                        "pid": {
+                          "type": "string",
+                          "description": "The Personnel Identification Number (PID) of the personnel"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "The name of the personnel"
+                        },
+                        "lastname": {
+                          "type": "string",
+                          "description": "The last name of the personnel"
+                        },
+                        "department": {
+                          "type": "string",
+                          "description": "The department of the personnel"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+ 
+            "400": 
+            {
+              "description": "Invalid request parameters",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "description": "nid in use / [nid | pid | name | lastname | department] must be string / [nid | pid | name | lastname | department] must be exactly 8 characters / should have a string property [nid | pid | name | lastname | department]"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Not Authorized",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "description": "Not Authorized"
+                      }
+                    }
+                  }
+                }
+              }
+              },
+              "404": {
+                "description": "Personnel Not Found",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "description": "Not Found"
+                        }
+                      }
+                    }
+                  }
+                }
+                }
+
+        }
+        },
+        "put": {
+            "summary": "Update a specific personnel record.",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Personnel"
+                  }
+                }
+              }
+            },
+            "responses": {
+                "200": {
+                    "description": "Personnel created successfully",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "nid": {
+                              "type": "string",
+                              "description": "The National Identification Number (NID) of the personnel"
+                            },
+                            "pid": {
+                              "type": "string",
+                              "description": "The Personnel Identification Number (PID) of the personnel"
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "The name of the personnel"
+                            },
+                            "lastname": {
+                              "type": "string",
+                              "description": "The last name of the personnel"
+                            },
+                            "department": {
+                              "type": "string",
+                              "description": "The department of the personnel"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+     
+              "400": 
+              {
+                "description": "Invalid request parameters",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "description": "nid in use / [nid | pid | name | lastname | department] must be string / [nid | pid | name | lastname | department] must be exactly 8 characters / should have a string property [nid | pid | name | lastname | department]"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Not Authorized",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "description": "Not Authorized"
+                        }
+                      }
+                    }
+                  }
+                }
+                },
+                "404": {
+                    "description": "Personnel Not Found",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "message": {
+                              "type": "string",
+                              "description": "Not Found"
+                            }
+                          }
+                        }
+                      }
+                    }
+                    }
+            }
+          }
+        }
+    }
+}
+
+   

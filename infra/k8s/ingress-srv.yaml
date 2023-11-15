@@ -10,6 +10,13 @@ spec:
   - host: localhost
     http:
       paths:
+      - pathType: Exact
+        path: /api/docs/users
+        backend:
+          service:
+            name: auth-srv
+            port: 
+              number: 3000     
       - pathType: Prefix
         path: /api/users/?(.*)
         backend:
@@ -17,6 +24,13 @@ spec:
             name: auth-srv
             port: 
               number: 3000
+      - pathType: Exact
+        path: /api/docs/personnels
+        backend:
+          service:
+            name: personnel-srv
+            port: 
+              number: 3000     
       - pathType: Prefix
         path: /api/personnels/?(.*)
         backend:

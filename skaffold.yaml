@@ -7,12 +7,14 @@ manifests:
     - ./infra/k8s/*
 build:
   local:
-    push: true
+    push: false
   artifacts:
     - image: mortezadanaei/gams-auth
       context: auth
       docker:
         dockerfile: Dockerfile
+        buildArgs:
+            NODE_IMAGE: node:alpine
       sync:
         manual:
           - src: 'src/**/*.ts'
@@ -21,6 +23,8 @@ build:
       context: personnel
       docker:
         dockerfile: Dockerfile
+        buildArgs:
+            NODE_IMAGE: node:alpine
       sync:
         manual:
           - src: 'src/**/*.ts'
