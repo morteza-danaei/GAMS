@@ -29,5 +29,14 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-
+    - image: mortezadanaei/gams-role
+      context: role
+      docker:
+        dockerfile: Dockerfile
+        buildArgs:
+            NODE_IMAGE: node:alpine
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
             
