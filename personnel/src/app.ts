@@ -29,7 +29,7 @@ app.use(swaggerRouter);
  * A middleware that adds currentuser to the req obj if
  * the user is signed in
  */
-// app.use(currentUser);
+app.use(currentUser);
 
 // TODO: add a middleware to check the role of the user
 app.use(createPersonnelRouter);

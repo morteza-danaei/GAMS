@@ -35,7 +35,7 @@ spec:
             - name: NATS_CLUSTER_ID
               value: gams          
             - name: MONGO_URI
-              value: 'mongodb://personnel-mongo-srv:27017/tickets'
+              value: 'mongodb://personnel-mongo-srv:27017/personnels'
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
