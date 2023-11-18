@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: role-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: role
+  template:
+    metadata:
+      labels:
+        app: role
+    spec:
+      containers:
+        - name: role
+          image: mortezadanaei/gams-role:latest
+          env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: COOKIE_KEY1
+              valueFrom:
+                secretKeyRef:
+                  name: cookie-secret1
+                  key: COOKIE_KEY1
+            - name: COOKIE_KEY2
+              valueFrom:
+                secretKeyRef:
+                  name: cookie-secret2
+                  key: COOKIE_KEY2
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: gams          
+            - name: MONGO_URI
+              value: 'mongodb://role-mongo-srv:27017/roles'
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: role-srv
+spec:
+  selector:
+    app: role
+  ports:
+    - name: role
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
