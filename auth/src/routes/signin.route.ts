@@ -34,6 +34,7 @@ router.post(
       "password",
       "email",
     ]);
+
     // Validate the request body.
     if (validationErrors) {
       return next(new RequestValidationError(validationErrors));
