@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: personnel-mongo-depl
+  name: role-mongo-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: personnel-mongo
+      app: role-mongo
   template:
     metadata:
       labels:
-        app: personnel-mongo
+        app: role-mongo
     spec:
       containers:
-        - name: personnel-mongo
+        - name: role-mongo
           image: mongo:latest
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: personnel-mongo-srv
+  name: role-mongo-srv
 spec:
   selector:
-    app: personnel-mongo
+    app: role-mongo
   ports:
     - name: db
       protocol: TCP

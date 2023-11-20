@@ -24,8 +24,7 @@ interface RoleModel extends mongoose.Model<RoleDoc> {
 
 const roleSchema = new mongoose.Schema(
   {
-    //National ID
-    role: {
+    name: {
       type: "string",
       required: true,
     },

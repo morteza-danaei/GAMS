@@ -9,6 +9,7 @@ import {
   errorHandler,
   currentUser,
 } from "@gams/utility";
+import { createRoleRouter } from "./routes/new.route";
 
 const app = express();
 
@@ -25,6 +26,8 @@ app.use(cookieParser());
 app.use(currentUser);
 
 // TODO: add a middleware to check the role of the user
+
+app.use(createRoleRouter);
 
 app.all("*", async (req, res) => {
   throw new NotFoundError();
