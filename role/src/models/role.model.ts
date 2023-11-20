@@ -9,7 +9,7 @@ interface RoleProps {
 // An interface that describes the properties
 // that a role Document has
 interface RoleDoc extends mongoose.Document {
-  role: string;
+  name: string;
 }
 
 // An interface that describes the properties

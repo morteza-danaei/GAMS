@@ -8,6 +8,7 @@ import {
 import { Role } from "../models/role.model";
 import { roleSchema, RoleType } from "./ajv/ajv-schemas";
 import { natsConnector } from "../nats-connector";
+import { RoleCreatedPublisher } from "../helpers/events/role-created-publisher";
 
 const router = express.Router();
 
@@ -47,6 +48,13 @@ router.post(
       name,
     });
     await role.save();
+
+    /**
+     * Publishes a PersonnelCreatedEvent to NATS.
+     */
+    new RoleCreatedPublisher(natsConnector.client).publish({
+      name: role.name,
+    });
 
     res.status(201).send(role);
   }
