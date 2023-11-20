@@ -38,6 +38,7 @@ router.post(
     if (validationErrors) {
       return next(new RequestValidationError(validationErrors));
     }
+    console.log("after Validation");
 
     /**
      * Creates a new Role instance and assigns the values from the request body.
