@@ -9,7 +9,6 @@ import {
   testRequiresAuth,
   testInvalidCookie,
   testSignedInUser,
-  testUpdateProperty,
   stringAjvValidationTest,
 } from "@gams/utility";
 
