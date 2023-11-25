@@ -1,7 +1,7 @@
 /**
  * A JSON schema that defines the structure and validation rules for a role object.
  */
-const roleSchema = {
+const roleSchema: RoleType = {
   type: "object",
 
   properties: {
@@ -33,10 +33,14 @@ type RoleType = {
   type: string;
   properties: {
     name: Object;
+    [key: string]: any;
   };
   required: Array<string>;
-  errorMessage: Object;
+  errorMessage: {
+    [key: string]: any;
+  };
   additionalProperties: boolean;
+  [key: string]: any;
 };
 
 export { RoleType, roleSchema };

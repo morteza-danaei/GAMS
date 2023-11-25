@@ -2,16 +2,26 @@ import request from "supertest";
 import { app } from "../../app";
 import mongoose from "mongoose";
 
+import { Personnel, PrsnlProps } from "../../models/personnel.model";
 import {
-  testInvalidCookie,
-  testRequiresAuth,
   testRouteHandler,
+  testRequiresAuth,
+  testInvalidCookie,
   testSignedInUser,
-  validPersonnel,
-} from "./test.helper";
-import { Personnel } from "../../models/personnel.model";
+} from "@gams/utility";
 
 let prsnlId: string;
+
+/**
+ * a valid personnel to use for testing the creation of new personnel
+ */
+const validPersonnel: PrsnlProps = {
+  nid: "ksdjflskdj",
+  pid: "fjksdhdd",
+  name: "kdjsla",
+  lastname: "sadhf",
+  department: "fsadf",
+};
 
 /**
  * Creates a new  Personnel  document in db and fetches the ID of a personnel.
@@ -34,29 +44,41 @@ const getPersonnelId = async () => {
 describe("API tests", () => {
   it("has a route handler listening to /api/personnels for get requests", async () => {
     await getPersonnelId();
-    testRouteHandler(`/api/personnels/${prsnlId}`);
+    testRouteHandler(
+      `/api/personnels/${prsnlId}`,
+      "get",
+      200,
+      "asdfasdf",
+      validPersonnel,
+      expect,
+      app
+    );
   });
 
   it("can only be accessed if the user is signed in", async () => {
     await getPersonnelId();
-    testRequiresAuth(`/api/personnels/${prsnlId}`);
+    testRequiresAuth(`/api/personnels/${prsnlId}`, "get", 401, app);
   });
 
   it("returns 401 when cookie is tampered/invalid", async () => {
     await getPersonnelId();
-    testInvalidCookie(`/api/personnels/${prsnlId}`);
+    testInvalidCookie(`/api/personnels/${prsnlId}`, "get", 401, app);
   });
 
   it("returns a status other than 401 if the user is signed in", async () => {
     await getPersonnelId();
-    testSignedInUser(`/api/personnels/${prsnlId}`);
+    testSignedInUser(`/api/personnels/${prsnlId}`, "get", 401, "asdfasdf", app);
   });
 });
 
 it("returns a 404 if the personnel is not found", async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
 
-  await request(app).get(`/api/tickets/${id}`).send().expect(404);
+  await request(app)
+    .get(`/api/personnels/${id}`)
+    .set("Cookie", await global.signin())
+    .send()
+    .expect(404);
 });
 
 it("returns the personnel if the personnel is found", async () => {
