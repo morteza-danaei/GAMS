@@ -11,6 +11,7 @@ import {
 } from "@gams/utility";
 import { createRoleRouter } from "./routes/new.route";
 import { listRolesRouter } from "./routes/list.route";
+import { showRolesRouter } from "./routes/show.route";
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use(currentUser);
 
 app.use(createRoleRouter);
 app.use(listRolesRouter);
+app.use(showRolesRouter);
 
 app.all("*", async (req, res) => {
   throw new NotFoundError();
