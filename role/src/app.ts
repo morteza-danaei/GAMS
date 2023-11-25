@@ -10,6 +10,7 @@ import {
   currentUser,
 } from "@gams/utility";
 import { createRoleRouter } from "./routes/new.route";
+import { listRolesRouter } from "./routes/list.route";
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(currentUser);
 // TODO: add a middleware to check the role of the user
 
 app.use(createRoleRouter);
+app.use(listRolesRouter);
 
 app.all("*", async (req, res) => {
   throw new NotFoundError();
