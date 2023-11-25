@@ -10,7 +10,7 @@ import {
   testSignedInUser,
 } from "@gams/utility";
 
-let prsnlId: string;
+let roleId: string;
 
 /**
  * a valid role to use for testing the creation of new role
@@ -25,7 +25,7 @@ const validRole: RoleProps = {
  * This function makes a POST request to the `/api/roles` endpoint to create a new role. 
  * It then fetches all roles from the database and returns the ID of the first and only role since the db was empty before.
 
- * It assigns the prsnlId variable with the ID of a role created by the current user.
+ * It assigns the roleId variable with the ID of a role created by the current user.
  */
 const getPersonnelId = async () => {
   const response = await request(app)
@@ -34,14 +34,14 @@ const getPersonnelId = async () => {
     .send(validRole);
   const roles = await Role.find(validRole);
   expect(roles.length).toBe(1);
-  prsnlId = roles[0].id.toString();
+  roleId = roles[0].id.toString();
 };
 
 describe("API tests", () => {
   it("has a route handler listening to /api/roles for get requests", async () => {
     await getPersonnelId();
     testRouteHandler(
-      `/api/roles/${prsnlId}`,
+      `/api/roles/${roleId}`,
       "get",
       200,
       "asdfasdf",
@@ -53,17 +53,17 @@ describe("API tests", () => {
 
   it("can only be accessed if the user is signed in", async () => {
     await getPersonnelId();
-    testRequiresAuth(`/api/roles/${prsnlId}`, "get", 401, app);
+    testRequiresAuth(`/api/roles/${roleId}`, "get", 401, app);
   });
 
   it("returns 401 when cookie is tampered/invalid", async () => {
     await getPersonnelId();
-    testInvalidCookie(`/api/roles/${prsnlId}`, "get", 401, app);
+    testInvalidCookie(`/api/roles/${roleId}`, "get", 401, app);
   });
 
   it("returns a status other than 401 if the user is signed in", async () => {
     await getPersonnelId();
-    testSignedInUser(`/api/roles/${prsnlId}`, "get", 401, "asdfasdf", app);
+    testSignedInUser(`/api/roles/${roleId}`, "get", 401, "asdfasdf", app);
   });
 });
 
@@ -81,7 +81,7 @@ it("returns the role if the role is found", async () => {
   await getPersonnelId();
 
   const response = await request(app)
-    .get(`/api/roles/${prsnlId}`)
+    .get(`/api/roles/${roleId}`)
     .set("Cookie", await global.signin())
     .expect(200);
 
