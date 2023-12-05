@@ -18,7 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@gams/utility": "^1.0.34",
+    "@gams/utility": "^1.0.35",
     "@types/cookie": "^0.5.3",
     "@types/cookie-parser": "^1.4.5",
     "@types/cookie-session": "^2.0.46",

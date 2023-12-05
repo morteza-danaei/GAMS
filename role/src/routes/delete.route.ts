@@ -1,6 +1,9 @@
 import express, { NextFunction, Request, Response } from "express";
 import { NotFoundError } from "@gams/utility";
+
 import { Role } from "../models/role.model";
+import { natsConnector } from "../nats-connector";
+import { RoleDeletedPublisher } from "../helpers/events/role-deleted-publisher";
 
 const router = express.Router();
 
@@ -21,6 +24,14 @@ router.delete(
       }
 
       await Role.findByIdAndDelete(req.params.id);
+
+      /**
+       * Publishes a PersonnelCreatedEvent to NATS.
+       */
+      new RoleDeletedPublisher(natsConnector.client).publish({
+        id: req.params.id,
+      });
+
       res.send({});
     } catch (error) {
       next(error);
