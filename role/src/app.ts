@@ -13,6 +13,7 @@ import { createRoleRouter } from "./routes/new.route";
 import { listRolesRouter } from "./routes/list.route";
 import { showRolesRouter } from "./routes/show.route";
 import { updateRoleRouter } from "./routes/update.route";
+import { deleteRolesRouter } from "./routes/delete.route";
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use(createRoleRouter);
 app.use(listRolesRouter);
 app.use(showRolesRouter);
 app.use(updateRoleRouter);
+app.use(deleteRolesRouter);
 
 app.all("*", async (req, res) => {
   throw new NotFoundError();
