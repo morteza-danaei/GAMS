@@ -1,7 +1,7 @@
 import { Subjects, Publisher, RoleDeletedEvent } from "@gams/utility";
 
 /**
- * A publisher that publishes `PersonnelCreatedEvent` events to the 'role:deleted' subject.
+ * A publisher that publishes `RoleDeletedEvent` events to the 'role:deleted' subject.
  */
 export class RoleDeletedPublisher extends Publisher<RoleDeletedEvent> {
   /**

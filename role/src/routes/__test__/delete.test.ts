@@ -108,7 +108,6 @@ it("deletes a role if a valid role id is provided", async () => {
   await request(app)
     .delete(`/api/roles/${roleId}`)
     .set("Cookie", await global.signin())
-    .send()
     .expect(200);
 
   const rolesAfterDelete = await Role.find({});
@@ -118,13 +117,12 @@ it("deletes a role if a valid role id is provided", async () => {
 it("publishes an event with subject Role:deleted", async () => {
   await getRoleId();
   await request(app)
-    .put(`/api/roles/${roleId}`)
+    .delete(`/api/roles/${roleId}`)
     .set("Cookie", await global.signin())
-    .send(Object.assign({}, validRole, { name: "ggggg" }))
     .expect(200);
 
   expect(natsConnector.client.publish).toHaveBeenCalledWith(
-    "Role:updated", // Expected subject value
+    "Role:deleted", // Expected subject value
     expect.any(String),
     expect.any(Function)
   );
