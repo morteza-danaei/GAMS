@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 import { app } from "./app";
 import { natsConnector } from "./nats-connector";
+import { RoleCreatedListener } from "./helpers/event/role-created-listener";
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -36,6 +37,8 @@ const start = async () => {
      */
     process.on("SIGINT", () => natsConnector.client.close());
     process.on("SIGTERM", () => natsConnector.client.close());
+
+    new RoleCreatedListener(natsConnector.client).listen();
 
     //connect to mongoose
     await mongoose.connect(process.env.MONGO_URI);
