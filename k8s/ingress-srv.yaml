@@ -38,6 +38,13 @@ spec:
             name: personnel-srv
             port: 
               number: 3000
+      - pathType: Prefix
+        path: /api/personnels-roles/?(.*)
+        backend:
+          service:
+            name: personnel-srv
+            port: 
+              number: 3000
       - pathType: Exact
         path: /api/docs/roles
         backend:

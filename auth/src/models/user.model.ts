@@ -30,7 +30,7 @@ interface UserModel extends mongoose.Model<UserDoc> {
 const userSchema = new mongoose.Schema(
   {
     username: {
-      type: "string",
+      type: String,
       required: true,
     },
     email: {

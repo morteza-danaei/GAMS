@@ -37,6 +37,7 @@ export class RoleCreatedListener extends Listener<RoleCreatedEvent> {
     });
 
     await role.save();
+    const createdRoles = await Role.find();
 
     // Acknowledge the message manually
     msg.ack();

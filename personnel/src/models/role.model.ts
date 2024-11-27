@@ -25,7 +25,7 @@ interface RoleModel extends mongoose.Model<RoleDoc> {
 const roleSchema = new mongoose.Schema(
   {
     name: {
-      type: "string",
+      type: String,
       required: true,
     },
 

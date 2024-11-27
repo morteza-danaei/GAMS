@@ -13,6 +13,7 @@ import { createPersonnelRouter } from "./routes/new.route";
 import { showPersonnelRouter } from "./routes/show.route";
 import { listPersonnelRouter } from "./routes/list.route";
 import { updatePersonnelRouter } from "./routes/update.route";
+import { listRolesRouter } from "./routes/list-roles.route";
 import { swaggerRouter } from "./routes/swagger.route";
 
 const app = express();
@@ -36,6 +37,7 @@ app.use(createPersonnelRouter);
 app.use(showPersonnelRouter);
 app.use(listPersonnelRouter);
 app.use(updatePersonnelRouter);
+app.use(listRolesRouter);
 
 app.all("*", async (req, res) => {
   throw new NotFoundError();

@@ -37,7 +37,7 @@ const prsnlSchema = new mongoose.Schema(
   {
     //National ID
     nid: {
-      type: "string",
+      type: String,
       required: true,
     },
 
