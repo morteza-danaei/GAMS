@@ -39,7 +39,7 @@ cd auth && npm install
 cd ../utility && npm install
 cd ../personnel && npm install
 cd ../role && npm install
-# Repeat for other services
+
 Set up environment variables: Create .env files in each microservice folder with the following:
 JWT_KEY: Secret key for JWT signing.
 MONGO_URI: MongoDB connection string.
@@ -56,18 +56,10 @@ Testing the Application
 Use Postman or Swagger at http://<HOST>:3000/api-docs to test APIs.
 Run tests:
 npm test
-Contributing
-Contributions are welcome! Please follow the contributing guidelines.
+
 
 License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-For more details, visit the GitHub repository.
+For more details, visit the GitHub repository.https://github.com/morteza-danaei/GAMS.git
 
-
-### Notes:
-- Adjust the content to reflect specific details about your project setup, particularly the services and functionality.
-- Include more usage instructions for key features.
-- Make sure you update `.env` examples based on actual requirements.
-
-If you'd like more help refining this README or adding other sections, let me know!
