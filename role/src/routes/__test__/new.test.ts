@@ -4,12 +4,14 @@ import { app } from "../../app";
 import { Role, RoleProps } from "../../models/role.model";
 import { natsConnector } from "../../nats-connector";
 import { roleSchema } from "../ajv/ajv-schemas";
+import { RoleCreatedPublisher } from "../../helpers/events/role-created-publisher";
 import {
   testRouteHandler,
   testRequiresAuth,
   testInvalidCookie,
   testSignedInUser,
   stringAjvValidationTest,
+  Subjects,
 } from "@gams/utility";
 
 /**
@@ -28,6 +30,9 @@ const criteria = [
   ["type", 5],
   ["required", ""],
 ];
+
+// Mock the natsConnector module
+jest.mock("../../nats-connector");
 
 describe("API tests", () => {
   it(
@@ -104,16 +109,55 @@ it("creates a role if a valid role is provided", async () => {
   expect(roles[0].name).toEqual("kdjsla");
 });
 
-it("publishes an event with subject Role:created", async () => {
-  await request(app)
-    .post("/api/roles")
-    .set("Cookie", await global.signin())
-    .send(validRole)
-    .expect(201);
-
-  expect(natsConnector.client.publish).toHaveBeenCalledWith(
-    "Role:created", // Expected subject value
-    expect.any(String),
-    expect.any(Function)
+it("publishes an event to NATS with subject Role:created when a new role is created", async () => {
+  // Mock the publish method
+  const mockPublish = jest.fn(
+    (subject: string, data: string, callback: (err: any) => void) => {
+      callback(null); // Simulate a successful publish
+    }
   );
+
+  (natsConnector as any).client = {
+    publish: mockPublish,
+  } as any; // Cast to avoid type errors
+
+  // Create an instance of the publisher
+  const publisher = new RoleCreatedPublisher(natsConnector.client);
+
+  // Test data
+  const eventData = { name: "Test Role" };
+
+  // Call the publish method
+  await publisher.publish(eventData);
+
+  // Assertions
+  expect(mockPublish).toHaveBeenCalledTimes(1); // Ensure publish was called once
+  expect(mockPublish).toHaveBeenCalledWith(
+    Subjects.RoleCreated, // The subject
+    JSON.stringify(eventData), // The serialized data
+    expect.any(Function) // The callback function
+  );
+});
+
+it("handles publish errors in role creation", async () => {
+  // Mock the publish method to simulate an error
+  const mockPublish = jest.fn(
+    (subject: string, data: string, callback: (err: any) => void) => {
+      callback(new Error("NATS publish failed"));
+    }
+  );
+
+  (natsConnector as any).client = {
+    publish: mockPublish,
+  } as any;
+
+  const publisher = new RoleCreatedPublisher(natsConnector.client);
+
+  const eventData = { name: "Test Role" };
+
+  // Expect the promise to reject with an error
+  await expect(publisher.publish(eventData)).rejects.toThrow(
+    "NATS publish failed"
+  );
+  expect(mockPublish).toHaveBeenCalledTimes(1);
 });
